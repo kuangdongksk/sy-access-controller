@@ -77,10 +77,6 @@ export enum EStoreKey {
   卡片文档ID = "卡片文档ID",
   上锁的笔记 = "上锁的笔记",
   WorkFlow = "WorkFlow",
-  AI提供商 = "AI提供商",
-  AI默认提供商 = "AI默认提供商",
-  AI临时文档ID = "AI临时文档ID",
-  AI提示词模板 = "AI提示词模板",
 }
 
 export enum E数据索引 {
