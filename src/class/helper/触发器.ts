@@ -54,25 +54,27 @@ export class 触发器 {
   }
 
   async 数据处理() {
-    const { 事项版本, 卡片版本 } = await this.加载(EStoreKey.数据版本);
+    const 存储数据 = (await this.加载(EStoreKey.数据版本)) || {};
     const { 事项数据版本, 卡片数据版本 } = 最新数据版本;
+
+    let 事项版本 = 存储数据.事项版本;
+    let 卡片版本 = 存储数据.卡片版本;
 
     if (事项版本 !== 事项数据版本) {
       showMessage("数据版本不一致，正在进行数据升级", 20000, "info");
 
       const 所有事项 = await SQLer.获取所有事项();
 
-      所有事项.forEach(async (事项) => {
-        await SY块.设置块属性({
-          id: 事项.ID,
-          attrs: 事项转为属性(事项),
-        });
-      });
+      await Promise.all(
+        所有事项.map((事项) =>
+          SY块.设置块属性({
+            id: 事项.ID,
+            attrs: 事项转为属性(事项),
+          })
+        )
+      );
 
-      await this.保存(EStoreKey.数据版本, {
-        事项版本: 事项数据版本,
-        卡片版本,
-      });
+      事项版本 = 事项数据版本;
     }
 
     if (卡片版本 !== 卡片数据版本) {
@@ -80,12 +82,10 @@ export class 触发器 {
 
       const 所有卡片 = await 卡片类.getAll();
 
-      const promiseList = [];
-      所有卡片.forEach(async (卡片) => {
-        promiseList.push(() =>
+      await Promise.all(
+        所有卡片.map((卡片) =>
           SY块.设置块属性({
             id: 卡片.ID,
-            // attrs: 卡片类.卡片转为属性(卡片),
             attrs: {
               "custom-plugin-lively-card": "",
               "custom-plugin-lively-card-description": "",
@@ -96,14 +96,22 @@ export class 触发器 {
               "custom-plugin-lively-card-alias": "",
             },
           })
-        );
-      });
-      await Promise.all(promiseList.map((fn) => fn()));
+        )
+      );
 
-      await this.保存(EStoreKey.数据版本, {
+      卡片版本 = 卡片数据版本;
+    }
+
+    // 任一版本发生变化时，一次性保存最终结果
+    // 注意：必须合并到末尾统一保存，否则分支间会互相覆盖，导致版本号永远写不进去、每次启动都重复升级
+    if (事项版本 !== 存储数据.事项版本 || 卡片版本 !== 存储数据.卡片版本) {
+      const ok = await this.保存(EStoreKey.数据版本, {
         事项版本,
-        卡片版本: 卡片数据版本,
+        卡片版本,
       });
+      if (!ok) {
+        console.error("数据版本保存失败，下次启动将再次执行数据升级");
+      }
     }
   }
 
