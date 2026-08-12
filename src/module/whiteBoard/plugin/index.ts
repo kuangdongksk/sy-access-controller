@@ -1,6 +1,6 @@
 import { $, Cash } from "@/constant/三方库";
 import { EPluginPath, EWhiteBoard属性名称 } from "@/constant/系统码";
-import { 生成块ID } from "@/tools/事项/事项";
+import { 生成块ID } from "@/tools/块ID";
 import { App, IEventBusMap, openTab } from "siyuan";
 import Kramdown助手 from "../../../class/helper/Kramdown助手";
 import { SY块 } from "../../../class/思源/块";

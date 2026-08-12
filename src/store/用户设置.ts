@@ -1,4 +1,4 @@
-import { I领域 } from "@/types/喧嚣/事项";
+import { I领域 } from "@/types/喧嚣/领域";
 import { I用户设置 } from "@/types/喧嚣/设置";
 import { atom } from "jotai";
 

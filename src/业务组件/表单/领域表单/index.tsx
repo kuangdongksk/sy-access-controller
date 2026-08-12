@@ -6,7 +6,7 @@ import 增改查弹窗表单, {
 import { E块属性名称, EStoreKey } from "@/constant/系统码";
 import { storeAtom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
-import { I分类, I领域 } from "@/types/喧嚣/事项";
+import { I分类, I领域 } from "@/types/喧嚣/领域";
 import { Checkbox, Form, Input } from "antd";
 import { useAtom } from "jotai";
 import { forwardRef, Ref, useImperativeHandle, useRef } from "react";

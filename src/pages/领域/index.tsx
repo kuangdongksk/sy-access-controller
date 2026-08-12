@@ -1,6 +1,6 @@
 import SQLer from "@/class/helper/SQLer";
 import { 用户设置Atom } from "@/store/用户设置";
-import { I领域 } from "@/types/喧嚣/事项";
+import { I领域 } from "@/types/喧嚣/领域";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import 领域卡片 from "./components/领域卡片";
