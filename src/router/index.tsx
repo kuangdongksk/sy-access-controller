@@ -1,4 +1,3 @@
-import WhiteBoard from "@/module/whiteBoard";
 import WorkFlow from "@/module/workFlow";
 import WorkFlowDetail from "@/module/workFlow/pages/WorkflowDetail";
 import App from "@/pages";
@@ -27,10 +26,6 @@ const router = createHashRouter([
             element: <领域详情 />,
           },
         ],
-      },
-      {
-        path: "白板",
-        element: <WhiteBoard />,
       },
       {
         path: "工作流",

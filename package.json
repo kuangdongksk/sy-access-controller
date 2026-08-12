@@ -51,8 +51,7 @@
     "pinyin-pro": "^3.28.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.2",
-    "tldraw": "^4.5.12"
+    "react-router-dom": "^7.18.2"
   },
   "prettier": {
     "printWidth": 100

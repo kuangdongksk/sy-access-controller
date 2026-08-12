@@ -10,7 +10,6 @@ export const 属性前缀 = `${自定义}-plugin-${喧嚣}-`;
 
 export enum EPluginPath {
   SYLively = "SYLively",
-  EditWhiteBoard = "EditWhiteBoard",
 }
 
 export enum E块属性名称 {
@@ -31,12 +30,6 @@ const EVeil属性前缀 = `${属性前缀}veil-`;
 
 export enum EVeil属性名称 {
   pwdHash = EVeil属性前缀 + "pwdHash",
-}
-
-const EWhiteBoard属性前缀 = `${属性前缀}whiteBoard-`;
-
-export enum EWhiteBoard属性名称 {
-  WhiteBoard = EWhiteBoard属性前缀 + "WhiteBoard",
 }
 
 export enum EStoreKey {

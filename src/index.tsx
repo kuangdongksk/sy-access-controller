@@ -11,8 +11,6 @@ import { generateCreateCardForm } from "./module/card/plugin/NewCardForm";
 import { SettingManager } from "./module/setting";
 import UpdateNotice from "./module/update";
 import Veil from "./module/veil";
-import WhiteBoard from "./module/whiteBoard/plugin";
-import TlWb from "./module/whiteBoard/TlWb";
 import { storeAtom, 仓库 } from "./store";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
@@ -52,7 +50,6 @@ export default class SyLively extends Plugin {
     getData: this.getData,
   });
   private veil = new Veil(this.getData, this.putData);
-  private whiteBoard = new WhiteBoard({ app: this.app, pluginName: this.name });
   private 提示器1: 触发器 = new 触发器(this.getData, this.putData);
 
   async onload() {
@@ -188,33 +185,6 @@ export default class SyLively extends Plugin {
       },
     });
     //#endregion
-
-    //#region 添加白板编辑页面
-    this.addTab({
-      type: EPluginPath.EditWhiteBoard,
-      init() {
-        const blockId = this.data?.blockId;
-        this.element.appendChild(tabDiv);
-        if (tabDiv) {
-          const root = ReactDOM.createRoot(tabDiv);
-
-          仓库.set(storeAtom, {
-            load: getData,
-            save: saveData,
-          });
-          root.render(
-            <Provider store={仓库}>
-              <TlWb blockId={blockId} />
-            </Provider>,
-          );
-        }
-      },
-      beforeDestroy() {},
-      destroy() {
-        this.element.removeChild(tabDiv);
-      },
-    });
-    //#endregion
   }
 
   async setAllDock() {
@@ -246,7 +216,6 @@ export default class SyLively extends Plugin {
     this.eventBus.on("loaded-protyle-dynamic", () => {});
     this.eventBus.on("loaded-protyle-static", (e) => {
       that.veil.onLoadedProtyleStatic(e);
-      that.whiteBoard.onLoadedProtyleStatic();
     });
     this.eventBus.on("ws-main", (e) => {
       that.veil.onWSMain(e);

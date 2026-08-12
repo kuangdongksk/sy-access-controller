@@ -22,7 +22,6 @@ const { Sider, Content } = Layout;
 const C目录 = [
   { key: "领域", icon: <HeatMapOutlined />, label: "领域" },
   { key: "工作流", icon: <HeatMapOutlined />, label: "工作流" },
-  { key: "白板", icon: <HeatMapOutlined />, label: "白板" },
   { key: "卡片", icon: <CreditCardOutlined />, label: "卡片" },
   { key: "关系", icon: <ShareAltOutlined />, label: "关系" },
   { key: "设置", icon: <SettingOutlined />, label: "设置" },
