@@ -53,7 +53,7 @@ export default class SyLively extends Plugin {
   });
   private veil = new Veil(this.getData, this.putData);
   private whiteBoard = new WhiteBoard({ app: this.app, pluginName: this.name });
-  private 提示器1: 触发器 = new 触发器(this.getData, this.putData, this.addStatusBar);
+  private 提示器1: 触发器 = new 触发器(this.getData, this.putData);
 
   async onload() {
     this.isMobile = getFrontend() === "mobile" || getFrontend() === "browser-mobile";

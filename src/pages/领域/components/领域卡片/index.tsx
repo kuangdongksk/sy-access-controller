@@ -1,12 +1,10 @@
 import SQLer from "@/class/helper/SQLer";
 import { EBtnClass } from "@/components/base/sy/按钮";
-import ProcessLine from "@/components/base/rc/ProcessLine";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
-import { E事项状态 } from "@/constant/syLively";
 import { EStoreKey } from "@/constant/系统码";
 import { storeAtom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
-import { I事项, I分类, I领域 } from "@/types/喧嚣/事项";
+import { I分类, I领域 } from "@/types/喧嚣/领域";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { Checkbox, Dropdown, List, Tooltip } from "antd";
 import { useAtom } from "jotai";
@@ -28,14 +26,6 @@ function 领域卡片(props: { 领域: I领域 }) {
   const 分类表单Ref = useRef<I增改查弹窗表单Ref>(null);
 
   const [分类列表, 令分类列表为] = useState<I分类[]>([]);
-  const [事项列表, 令事项列表为] = useState<I事项[]>([]);
-
-  const 加载事项 = () => {
-    if (名称 === 添加领域) return;
-    SQLer.获取指定领域下的事项(ID).then((data) => {
-      令事项列表为(data);
-    });
-  };
 
   const 加载数据 = () => {
     if (名称 === 添加领域) return;
@@ -45,7 +35,6 @@ function 领域卡片(props: { 领域: I领域 }) {
   };
 
   useEffect(() => {
-    加载事项();
     加载数据();
   }, [领域]);
 
@@ -70,18 +59,6 @@ function 领域卡片(props: { 领域: I领域 }) {
                         }}
                       >
                         新建分类
-                      </span>
-                    ),
-                  },
-                  {
-                    key: "新建事项",
-                    label: (
-                      <span
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                      >
-                        新建事项
                       </span>
                     ),
                   },
@@ -120,12 +97,6 @@ function 领域卡片(props: { 领域: I领域 }) {
           <span>{描述}</span>
         </div>
         <div className={styles.卡片内容}>
-          <ProcessLine
-            process={
-              事项列表.filter((事项) => 事项.状态 === E事项状态.已完成).length /
-              事项列表.length
-            }
-          />
           <div className={styles.卡片内容中间}>
             {分类列表.map((分类) => (
               <List.Item>{分类.名称}</List.Item>

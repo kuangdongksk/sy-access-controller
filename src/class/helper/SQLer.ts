@@ -1,17 +1,8 @@
 import { E块属性名称 } from "@/constant/系统码";
-import { E时间格式化 } from "@/constant/syLively";
-import { 属性转化为事项 } from "@/tools/事项/事项";
-import { 为事项添加领域分类, 整理事项, 组合领域分类 } from "@/tools/结构转换";
-import {
-  I事项,
-  I分类,
-  I领域,
-  I领域分类,
-  I领域分类事项,
-} from "@/types/喧嚣/事项";
+import { 组合领域分类 } from "@/tools/结构转换";
+import { I分类, I领域, I领域分类 } from "@/types/喧嚣/领域";
 import { I用户设置 } from "@/types/喧嚣/设置";
 import { I块 } from "@/types/数据库表";
-import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost, IWebSocketData } from "siyuan";
 
 export default class SQLer {
@@ -86,104 +77,6 @@ export default class SQLer {
     });
 
     return this.数据库到分类(查询结果.data);
-  }
-  //#endregion
-
-  //#region 事项
-  private static 生成事项SQL(条件数组?: string[]): string {
-    const 条件 = 条件数组 ? "WHERE " + 条件数组.join(" AND ") : "";
-
-    return `
-      SELECT
-        事项
-      FROM
-        (SELECT
-          block_id,
-          '{' || GROUP_CONCAT('"' || name || '":"' || value || '"', ',') || '}' AS 事项
-        FROM
-          attributes
-        WHERE
-          name LIKE '%custom-plugin-lively-thing-%'
-        GROUP BY
-          block_id)
-        ${条件}
-    `;
-  }
-
-  private static 原始结果转化为事项(data: { 事项: string }[]): I事项[] {
-    if (!data) return [];
-    return data.map((item: { 事项: string }) => {
-      const 原始 = JSON.parse(item.事项);
-      return 属性转化为事项(原始);
-    });
-  }
-
-  public static async 获取所有事项(): Promise<I事项[]> {
-    const { data } = await fetchSyncPost("/api/query/sql", {
-      // stmt: 'SELECT * FROM attributes WHERE name = "custom-plugin-lively-things"',
-      stmt: this.生成事项SQL(),
-    });
-
-    // return data.map((item: { value: string }) => JSON.parse(item.value));
-    return this.原始结果转化为事项(data);
-  }
-
-  public static async 获取笔记本下的所有事项(
-    笔记本ID: string
-  ): Promise<I事项[]> {
-    const { data } = await fetchSyncPost("/api/query/sql", {
-      stmt: this.生成事项SQL([`事项 LIKE '%${笔记本ID}%'`]),
-    });
-
-    return this.原始结果转化为事项(data);
-  }
-
-  public static async 获取笔记本下的所有事项按领域分类组织(
-    笔记本ID: string
-  ): Promise<I领域分类事项[]> {
-    const 所有领域 = await this.获取笔记本下的领域(笔记本ID);
-    const 所有分类 = await this.获取笔记本下的所有分类(笔记本ID);
-    const 所有事项 = await this.获取笔记本下的所有事项(笔记本ID);
-
-    return 整理事项(所有领域, 所有分类, 所有事项);
-  }
-
-  public static async 获取笔记本下的所有事项添加分类(笔记本ID: string): Promise<
-    (I事项 & {
-      领域名称: string;
-      分类名称: string;
-    })[]
-  > {
-    const 所有领域 = await this.获取笔记本下的领域(笔记本ID);
-    const 所有分类 = await this.获取笔记本下的所有分类(笔记本ID);
-    const 所有事项 = await this.获取笔记本下的所有事项(笔记本ID);
-
-    return 为事项添加领域分类(所有领域, 所有分类, 所有事项);
-  }
-
-  public static async 获取指定领域下的事项(领域ID: string): Promise<I事项[]> {
-    const { data } = await fetchSyncPost("/api/query/sql", {
-      stmt: this.生成事项SQL([`事项 LIKE '%${领域ID}%'`]),
-    });
-
-    return this.原始结果转化为事项(data);
-  }
-
-  public static async 获取指定分类下的事项(分类ID: string): Promise<I事项[]> {
-    const { data } = await fetchSyncPost("/api/query/sql", {
-      stmt: this.生成事项SQL([`事项 LIKE '%${分类ID}%'`]),
-    });
-
-    return this.原始结果转化为事项(data);
-  }
-
-  public static async 根据开始时间获取当月事项(日期: Dayjs): Promise<I事项[]> {
-    const 开始时间 = dayjs(日期).format(E时间格式化.思源时间).slice(0, 6);
-    return fetchSyncPost("/api/query/sql", {
-      stmt: this.生成事项SQL([`事项 LIKE '%"开始时间":"${开始时间}%'`]),
-    }).then(({ data }) => {
-      return this.原始结果转化为事项(data);
-    });
   }
   //#endregion
 
