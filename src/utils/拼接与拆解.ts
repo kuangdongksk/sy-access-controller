@@ -1,4 +1,4 @@
-import { 分隔符 } from "@/constant/状态配置";
+import { 分隔符 } from "@/constant/系统码";
 
 export function stringArr2string(arr: string[]): string {
   return arr.join(分隔符);
