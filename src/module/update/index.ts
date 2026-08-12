@@ -3,7 +3,7 @@ import { EStoreKey } from "@/constant/系统码";
 import { Dialog } from "siyuan";
 
 export default class UpdateNotice {
-  private latestVersion: string = "P0.2.7";
+  private latestVersion: string = "0.2.7";
 
   private EUpdateType = {
     功能: "功能",
@@ -20,14 +20,16 @@ export default class UpdateNotice {
       title: `更新公告：${this.latestVersion}`,
       content: `
       <div style="padding: 12px;">
-        <h3>${this.EUpdateType.功能}</h3>
+        <h3>${this.EUpdateType.移除}</h3>
         <ul>
-          <li>新增AI对话功能 (Alt+Shift+S)</li>
-          <li>支持OpenAI兼容和Anthropic原生API</li>
-          <li>AI响应自动包装为超级块</li>
-          <li>可滚动预览完整响应</li>
+          <li>移除内置AI对话模块（思源笔记已内置AI功能）</li>
         </ul>
-      <div>
+        <h3>${this.EUpdateType.优化}</h3>
+        <ul>
+          <li>规范插件版本号字段</li>
+          <li>修复数据版本升级逻辑，避免每次启动重复提示</li>
+        </ul>
+      </div>
       `,
     });
 
